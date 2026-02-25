@@ -65,3 +65,15 @@ class FusionConfig(Base):
         back_populates="fusion_config",
         cascade="all, delete-orphan"
     )
+
+    data_models = relationship(
+        "DataModel",
+        back_populates="fusion_config",
+        cascade="all, delete-orphan"
+    )
+
+    idp_configs = relationship(
+        "IdpConfig",
+        back_populates="fusion_config",
+        cascade="all, delete-orphan"
+    )

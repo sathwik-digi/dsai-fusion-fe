@@ -6,3 +6,4 @@ from .fusion_config import FusionConfig
 from .user_role import UserRole
 from .user_token import UserToken
 from .service_enablement import ServiceEnablement
+from .idp_config import IdpConfig

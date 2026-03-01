@@ -49,3 +49,8 @@ class Customer(Base):
         back_populates="customer",
         cascade="all, delete-orphan"
     )
+
+    tools_integrations = relationship(
+        "ToolsIntegration",
+        back_populates="customer"
+    )

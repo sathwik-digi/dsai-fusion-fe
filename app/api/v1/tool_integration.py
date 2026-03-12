@@ -15,7 +15,7 @@ router = APIRouter(tags=["Tools Integration"])
 
 
 @router.post(
-    "",
+    "/createTool",
     response_model=ToolsIntegrationResponse,
     status_code=status.HTTP_201_CREATED,
 )
@@ -27,7 +27,7 @@ def create_tools_integration(
     return crud.create_tool(db, current_user.customer_id, payload)
 
 
-@router.get("", response_model=List[ToolsIntegrationResponse])
+@router.get("/getAllTools", response_model=List[ToolsIntegrationResponse])
 def get_my_tools_integrations(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
@@ -35,7 +35,7 @@ def get_my_tools_integrations(
     return crud.get_all_tools(db, current_user.customer_id)
 
 
-@router.get("/{tool_id}", response_model=ToolsIntegrationResponse)
+@router.get("/getToolById/{tool_id}", response_model=ToolsIntegrationResponse)
 def get_tools_integration(
     tool_id: int,
     db: Session = Depends(get_db),
@@ -49,7 +49,7 @@ def get_tools_integration(
     return record
 
 
-@router.put("/{tool_id}", response_model=ToolsIntegrationResponse)
+@router.put("/updateToolByID/{tool_id}", response_model=ToolsIntegrationResponse)
 def update_tools_integration(
     tool_id: int,
     payload: ToolsIntegrationUpdate,
@@ -64,7 +64,10 @@ def update_tools_integration(
     return crud.update_tool(db, record, payload)
 
 
-@router.delete("/{tool_id}", status_code=status.HTTP_204_NO_CONTENT)
+from fastapi import status, HTTPException, Depends
+from sqlalchemy.orm import Session
+
+@router.delete("/deleteToolById/{tool_id}", status_code=status.HTTP_200_OK)
 def delete_tools_integration(
     tool_id: int,
     db: Session = Depends(get_db),
@@ -75,5 +78,5 @@ def delete_tools_integration(
     if not record:
         raise HTTPException(status_code=404, detail="Record not found")
 
-    crud.delete_tool(db, record)
-    return None
+    message = crud.delete_tool(db, record)
+    return {"message": message}
